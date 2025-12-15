@@ -12,25 +12,35 @@
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>> ans ;
-        if(root==NULL)
+        vector<vector<int>>ans;
+        func(root,ans);
         return ans;
-        queue<TreeNode*> q;
+        
+    }
+    void func(TreeNode*root,vector<vector<int>>&ans){
+        if (root == nullptr) return;
+        queue<TreeNode*>q;
         q.push(root);
         while(!q.empty()){
-            int size=q.size();
-            vector<int> level;
-            for(int i=0;i<size;i++){
-                TreeNode*node=q.front();
-                q.pop();
-                if(node->left!=nullptr)
-                q.push(node->left);
-                 if(node->right!=nullptr)
-                q.push(node->right);
-                level.push_back(node->val);
+            int n=q.size();
+            vector<int>level;
+           
+           for(int i=0;i<n;i++){
+             auto curr=q.front();
+             q.pop();
+             level.push_back(curr->val);
+
+            if(curr->left!=nullptr){
+                q.push(curr->left);
+              //  level.push_back(root->left->val);
             }
-            ans.push_back(level);
+            if(curr->right!=nullptr){
+                q.push(curr->right);
+               //level.push_back(root->left->val);
+            }
+}
+   ans.push_back(level);
         }
-        return ans;
+
     }
 };
