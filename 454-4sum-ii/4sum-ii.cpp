@@ -3,7 +3,7 @@ public:
     int fourSumCount(vector<int>& nums1, vector<int>& nums2,
                      vector<int>& nums3, vector<int>& nums4) {
         
-        unordered_map<int, int> mp;
+        map<int, int> mp;
         int ans = 0;
 
         // nums1 + nums2
