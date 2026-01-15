@@ -1,22 +1,28 @@
 class Solution {
 public:
-    vector<int> countBits(int n) { vector<int> ans;
-        ans.push_back(0);
-       
-        for(int i=1;i<=n;i++){
-     int cnt=0;
-     int k=i;
-            while(k!=0){
-                if(k&1){
-                    cnt++;
-                }
-                k=k>>1;
-            }
+int dp[100100];
+    vector<int> countBits(int n) {
+        memset(dp,-1,sizeof(dp));
+        vector<int>st;
+        for(int i=0;i<=n;i++){
+            int ans=rec(i);
+            st.push_back(ans);
 
-           
-           ans.push_back(cnt);
         }
-        return ans;
+        return st;
         
+    }
+    int rec(int x){
+        if(x==0){
+            return 0;
+
+        }
+        if(dp[x]!=-1){
+            return dp[x];
+        }
+        int ans=(rec(x/2)+x%2);
+        return dp[x]=ans;
+
+
     }
 };
