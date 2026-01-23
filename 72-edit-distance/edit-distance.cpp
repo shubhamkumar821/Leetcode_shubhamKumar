@@ -1,27 +1,38 @@
 class Solution {
 public:
+vector<vector<int>>dp;
+int m,n;
     int minDistance(string word1, string word2) {
-        int a = word1.size();
-        int b = word2.size();
-        vector<vector<int>> dp(a+1, vector<int>(b+1, 0));
+        n=word1.size();
+        m=word2.size();
+      dp=vector<vector<int>>(n,vector<int>(m,-1));
+        
+       // memset(dp,-1,sizeof(dp));
+        return rec(0,0,word1,word2);
 
-        // base cases
-        for (int i = 0; i <= a; i++) dp[i][0] = i;
-        for (int j = 0; j <= b; j++) dp[0][j] = j;
-
-        // fill dp
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < b; j++) {
-                if (word1[i] == word2[j]) {
-                    dp[i+1][j+1] = dp[i][j];  // no cost if same char
-                } else {
-                    dp[i+1][j+1] = 1 + min({dp[i][j],     // replace
-                                            dp[i][j+1],   // delete
-                                            dp[i+1][j]}); // insert
-                }
-            }
+        
+    }
+    int rec(int i,int j,string & s1,string & s2){
+        if(i==n){
+          return   m-j;
+        }
+        if(j==m){
+            return n-i;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
         }
 
-        return dp[a][b];
+        if(s1[i]==s2[j]){
+          dp[i][j]=  rec(i+1,j+1,s1,s2);
+        }
+      else{
+        int ans=min(rec(i+1,j,s1,s2),rec(i,j+1,s1,s2));
+        ans=min(ans,rec(i+1,j+1,s1,s2));
+        dp[i][j]=ans+1;
+      }
+      return dp[i][j];
+
+
     }
 };
