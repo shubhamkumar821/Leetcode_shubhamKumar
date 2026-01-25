@@ -1,27 +1,25 @@
 class Solution {
 public:
+int dp[100];
     int climbStairs(int n) {
-        int ans=0;
-        int dp[101000];
         memset(dp,-1,sizeof(dp));
-       return rec(n,0,dp);
+        return rec(0,n);
         
         
     }
-    int rec(int n,int lev,int dp[])
-    {
-           if(lev>n){
-            return 0;
-           }
-           if(dp[lev]!=-1){
-            return dp[lev];
-           }
-        if(lev==n){
+    int rec(int st,int n){
+        if(st==n){
             return 1;
-
         }
-        dp[lev]=rec(n,lev+1,dp)+rec(n,lev+2,dp);
+        if(st>n){
+            return 0;
+        }
+        if(dp[st]!=-1){
+            return dp[st];
+        }
         
-        return rec(n,lev+1,dp)+rec(n,lev+2,dp);
+        int ans=0;
+         ans+=(rec(st+1,n)+rec(st+2,n));
+         return dp[st]= ans;
     }
 };
