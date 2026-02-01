@@ -1,59 +1,45 @@
 class Solution {
-    int m,n;
-    vector<vector<int>>dis;
-    int dx[4]={1,-1,0,0};
-    int dy[4]={0,0,1,-1};
 public:
-
+int dx[4]={0,0,1,-1};
+int dy[4]={1,-1,0,0};
+int n,m;
     int minimumEffortPath(vector<vector<int>>& heights) {
-        m=heights.size();
-        n=heights[0].size();
-        dis=vector<vector<int>>(m,vector<int>(n,1e9));
-        return dijkstra(heights);
+        vector<vector<int>>g(vector<vector<int>>(heights.size(),vector<int>(heights[0].size(),1e9)));
+        n=heights.size();
+        m=heights[0].size();
+        g[0][0]=0;
 
-        
+       priority_queue<
+    pair<int, pair<int,int>>,
+    vector<pair<int, pair<int,int>>>,
+    greater<pair<int, pair<int,int>>>
+> pq;
 
-        
-        
-     
-}
-int  dijkstra(vector<vector<int>>& heights){
-     priority_queue<vector<int>, vector<vector<int>>, greater<>> minHeap;
-        minHeap.push({0, 0, 0}); // {diff, row, col}
+        pq.push({0,{0,0}});
+        while(!pq.empty()){
+            auto x=pq.top();
+            int a=x.second.first;
+            int b=x.second.second;
+            int w=x.first;
+            pq.pop();
+            for(int i=0;i<4;i++){
+                int x=a+dx[i];
+                int y=b+dy[i];
+                if(x<0 || y<0 || y>=m || x>=n){
+                    continue;
+                }
+            
+                if(g[x][y]>max(abs(heights[a][b]-heights[x][y]),g[a][b]))
 
-    dis[0][0]=0;
-    while(!minHeap.empty()){
-        auto x=minHeap.top();
-        minHeap.pop();
-        int diff=x[0];
-        int r=x[1];
-        int c=x[2];
-        if(r==m-1 && c==n-1)
-        return diff;
-    for(int i=0;i<4;i++){
-        int a=r+dx[i];
-        int b=c+dy[i];
-        if(check(a,b)){
+                {
+                    g[x][y]=max(abs(heights[a][b]-heights[x][y]),g[a][b]);
+                    pq.push({g[x][y],{x,y}});
 
-            int newdiff=max(diff,abs(heights[a][b]-heights[r][c]));
-            if(newdiff<dis[a][b]){
-                dis[a][b]=newdiff;
-                minHeap.push({newdiff,a,b});
-            }
-
+                }
 
             }
         }
-
+        return g[n-1][m-1];
+        
     }
-    return 0;
-
-    }
-
-bool check(int x,int y){
-    if(x<0 || x>=m || y<0 || y>=n)
-    return 0;
-    return 1;
-}}
-
-;
+};
