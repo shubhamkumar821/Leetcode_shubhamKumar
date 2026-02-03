@@ -8,37 +8,41 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-
 class Solution {
 public:
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        vector<int>ans;
-        if(list1==nullptr && list2==nullptr){
-            return list1;
-        }
-        while(list1){
-            ans.push_back(list1->val);
-            list1=list1->next;
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+           ListNode*ptr=new ListNode(0);
+        ListNode*curr=ptr;
+
+        while(l1!=nullptr && l2!=nullptr){
+            if(l1->val>=l2->val){
+                 curr->next=l2;
+                 l2=l2->next;
+
+            }
+            else{
+                 curr->next=l1;
+                 l1=l1->next;
+                
+            }
+    curr = curr ->next;
 
         }
-          while(list2){
-            ans.push_back(list2->val);
-            list2=list2->next;
 
+         if(l1 != NULL)
+        {
+            curr -> next = l1;
+            l1 = l1->next;
         }
-        sort(ans.begin(),ans.end());
-        ListNode*head=new ListNode(ans[0]);
-        ListNode*mover=head;
-        for(int i=1;i<ans.size();i++){
-            ListNode*temp=new ListNode(ans[i]);
-            mover->next=temp;
-            mover=temp;
+        
+        if(l2 != NULL)
+        {
+            curr -> next = l2;
+            l2 = l2 ->next;
         }
-        return head;
         
-        
-         
-    
-        
+        return ptr->next;
     }
+        
+    
 };
