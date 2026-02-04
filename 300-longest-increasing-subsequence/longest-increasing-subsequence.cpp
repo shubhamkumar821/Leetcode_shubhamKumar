@@ -1,34 +1,33 @@
 class Solution {
 public:
+int dp[2590];
 vector<int>arr;
-vector<vector<int>>dp;
-
 int n;
-
     int lengthOfLIS(vector<int>& nums) {
-        n=nums.size();
-      
-        dp=vector<vector<int>>(nums.size()+1,vector<int>(nums.size()+1,-1));
         arr=nums;
-        return rec(0,-1);
-        
-    }
-    int rec(int i,int prev){
-        if(i==n){
-            return 0;
+        n=nums.size();
+        memset(dp,-1,sizeof(dp));
+        int ans=0;
+        for(int i=0;i<n;i++){
+            ans=max(1+rec(i),ans);
         }
-        
-        if(dp[i][prev+1]!=-1){
-            return dp[i][prev+1];
-       }
-       int ans=rec(i+1,prev);
-        if(   prev==-1 || arr[prev]<arr[i]){
-            ans=max(ans,rec(i+1,i)+1);
-
-        }
-
-        return  dp[i][prev+1]= ans;
+        return ans;
     }
 
 
+    int rec(int lev){
+
+    int ans=0;
+    if(dp[lev]!=-1){
+        return dp[lev];
+    }
+
+        for(int i=0;i<lev;i++){
+            if(arr[lev]>arr[i]){
+                ans=max(1+rec(i),ans);
+            }
+        }
+
+        return dp[lev]=ans;
+    }
 };
