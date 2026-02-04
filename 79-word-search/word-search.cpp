@@ -1,44 +1,54 @@
 class Solution {
 public:
-int n,m;
-     // set<pair<int,int>>path;
-      vector<vector<bool>> visited;
-    bool exist(vector<vector<char>>& board, string word) {
-        n=board.size();
-        m=board[0].size();
-            visited = vector<vector<bool>>(n, vector<bool>(m, false));
+    string t;
+    int m, n;
+    vector<vector<char>> board;
 
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(dfs(board,word,i,j,0)){
+    bool exist(vector<vector<char>>& Board, string word) {
+        board = Board;
+        t = word;
+        m = board.size();
+        n = board[0].size();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rec(i, j, 0)) {
                     return true;
                 }
             }
         }
         return false;
-        
     }
 
-    bool dfs(vector<vector<char>>& board, string word,int r,int c,int i){
-
-        if(i==word.size()){
+    bool rec(int i, int j, int k) {
+        // ✅ base case
+        if (k == t.size()) {
             return true;
         }
 
-        if(c<0 || c>=m||r<0||r>=n || board[r][c]!=word[i]  ||visited[r][c] ){
-            return false ;
+        // ✅ boundary + mismatch check FIRST
+        if (!check(i, j, k)) {
+            return false;
         }
 
-    
+        // ✅ mark visited AFTER checking
+        char temp = board[i][j];
+        board[i][j] = '#';
 
-          visited[r][c] = true;
-        bool res = dfs(board, word, r + 1, c, i + 1) ||
-                   dfs(board, word, r - 1, c, i + 1) ||
-                   dfs(board, word, r, c + 1, i + 1) ||
-                   dfs(board, word, r, c - 1, i + 1);
-        visited[r][c] = false;
+        // ✅ use recursion results
+        bool found =
+            rec(i + 1, j, k + 1) ||
+            rec(i - 1, j, k + 1) ||
+            rec(i, j + 1, k + 1) ||
+            rec(i, j - 1, k + 1);
 
-        return res;
+        // ✅ backtrack
+        board[i][j] = temp;
 
+        return found;
+    }
+
+    bool check(int x, int y, int k) {
+        return !(x < 0 || y < 0 || x >= m || y >= n || board[x][y] != t[k]);
     }
 };
