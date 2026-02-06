@@ -1,19 +1,29 @@
 class Solution {
 public:
     int minRemoval(vector<int>& nums, int k) {
-        sort(nums.begin(), nums.end());
+        sort(nums.begin(),nums.end());
+        int j=0;
+        int i=0;
+        int n=nums.size();
+        int ans=0;
+    
+        while(i<n && j<n){
+while (i < n && nums[i] <= 1LL * nums[j] * k) {
+    i++;
+}
+              ans=max(ans,i-j);
 
-        int n = nums.size();
-        int i = 0;
-        int ans = 0;
+       j++;
+}
 
-        for (int j = 0; j < n; j++) {
-            while (i < n && nums[i] <= 1LL * nums[j] * k) {
-                i++;
-            }
-            ans = max(ans, i - j);
+  int sz=n-ans;
+        return sz;
+       
+
+
         }
 
-        return n - ans;
-    }
+       
+       
+    
 };
