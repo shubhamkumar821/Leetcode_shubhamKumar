@@ -7,7 +7,7 @@ public:
         for(int i=1;i*i<=nums[j];i++){
             if(nums[j]%i==0){
                 st.push_back(i);
-             if(i!=nums[j]/i){
+             if(i*i!=nums[j]){
                 st.push_back(nums[j]/i);
              }
                 
