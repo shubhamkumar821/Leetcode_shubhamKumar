@@ -1,25 +1,14 @@
 class Solution {
 public:
     double myPow(double x, int n) {
-        long long N=n;
-        if(n<0){
-            N=-N;
-            x=1/x;
-        }
-        return solve(x,N);
+        long long k=n;
+        return powf(x,k);
         
     }
-    double solve(double x, int n){
-        if(n==0){
-            return 1;
-        }
-      double y=  solve(x,n/2);
-      if(n%2==0){
-        return y*y;
-      }
-      else{
-    return y*y*x;
-      }
-
+    double powf(double x,long long  n){
+        if(n==0)return 1;
+        if(n<0) return powf(1/x,-n);
+        if(n%2==0) return powf(x*x,n/2);
+        return pow(x*x,(n-1)/2)*x;
     }
 };
