@@ -1,52 +1,47 @@
 class Solution {
 public:
-    vector<vector<pair<int,int>>> g;
-    vector<vector<int>> dis;
-
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<pair<int,int>>>g;
         g.resize(n);
-        dis.assign(n, vector<int>(k + 2, 1e9));
 
-        for(auto &i : flights){
-            g[i[0]].push_back({i[1], i[2]});
-        }
+        for(auto i:flights)g[i[0]].push_back({i[1],i[2]});
+          queue<pair<int,pair<int,int>>>pq;
 
-        return dijk(src, dst, k);
-    }
+             vector<int> dis(n, 1e9);
+             dis[src] = 0; 
+                  
+                  pq.push({0,{src,0}});
 
-    int dijk(int sc, int dst, int k) {
-        dis[sc][0] = 0;
+                  while(!pq.empty()){
+                    auto x=pq.front();
+                    pq.pop();
+                    int a=x.first;
+                    int b=x.second.first;
+                   int c= x.second.second;
+                    if(a>k)
+                    {
+                        continue;
+                    }
 
-        // cost, node, stops
-        priority_queue<
-            vector<int>,
-            vector<vector<int>>,
-            greater<vector<int>>
-        > pq;
+                    for(auto i:g[b]){
+                      int wt=i.second;
+                      int node=i.first;
 
-        pq.push({0, sc, 0});
+                      if(c+wt<dis[node] && a<=k){
+                        dis[node]=c+wt;
+                        pq.push({a+1,{node,c+wt}});
+                      }
+                    }
 
-        while(!pq.empty()) {
-            auto cur = pq.top();
-            pq.pop();
+                  }
 
-            int cost  = cur[0];
-            int node  = cur[1];
-            int stops = cur[2];
+                  if(dis[dst]!=1e9){
+                    return dis[dst];
+                  }
 
-            if(node == dst) return cost;
-            if(stops > k) continue;
+    return -1;
 
-            for(auto &i : g[node]) {
-                int nei = i.first;
-                int wt  = i.second;
-
-                if(dis[nei][stops + 1] > cost + wt) {
-                    dis[nei][stops + 1] = cost + wt;
-                    pq.push({cost + wt, nei, stops + 1});
-                }
-            }
-        }
-        return -1;
+                                     
+        
     }
 };
