@@ -2,37 +2,36 @@ class Solution {
 public:
 vector<vector<int>>g;
 vector<int>vis;
-bool cycle_detected=false;
+bool cycle;
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         int n=numCourses;
         g.resize(n);
         vis.assign(n,0);
+
         for(auto i:prerequisites){
-            g[i[1]].push_back(i[0]);
+            g[i[0]].push_back(i[1]);
         }
-       for(int i=0;i<n;i++){
-        if(!vis[i]){
-            dfs(i);
+      for (int i = 0; i < n; i++) {
+
+            if (vis[i] == 0) {
+
+                dfs(i);
+            }
         }
-       }
-       return !cycle_detected;
-        
+
+        return !cycle;
         
     }
-
-    void dfs(int node){
-        vis[node]=1;
-        for(auto i:g[node]){
+    void dfs(int sc_node){
+        vis[sc_node]=1;
+        for(auto i:g[sc_node]){
             if(vis[i]==0){
                 dfs(i);
             }
-            else if(vis[i]==1 && cycle_detected==false)
-            {
-                cycle_detected=true;
+            else if(vis[i]==1){
+                cycle=true;
             }
-            
         }
-        vis[node]=2;
-
+        vis[sc_node]=2;
     }
 };
