@@ -3,7 +3,7 @@ public:
   int n;
       vector<int> vis;
     bool canReach(vector<int>& arr, int start) {
-        int maxi=INT_MIN;
+      
         n=arr.size();
        
         vis.assign(n,0);
