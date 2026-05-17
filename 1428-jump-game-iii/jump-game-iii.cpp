@@ -5,9 +5,7 @@ public:
     bool canReach(vector<int>& arr, int start) {
         int maxi=INT_MIN;
         n=arr.size();
-        for(auto i:arr){
-            maxi=max(maxi,i);
-        }
+       
         vis.assign(n,0);
         return rec(start,arr);
 
