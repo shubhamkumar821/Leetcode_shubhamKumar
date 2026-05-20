@@ -1,47 +1,40 @@
 class Solution {
 public:
-    int m, n, K;
-    vector<vector<int>> g;
+int m, n, K;
+    const int MOD = 1000000007;
     vector<vector<vector<int>>> dp;
-    const int MOD = 1e9 + 7;
-
     int numberOfPaths(vector<vector<int>>& grid, int k) {
-        g = grid;
-        K = k;
-        m = grid.size();
-        n = grid[0].size();
+        n=grid.size();
+        m=grid[0].size();
+       K=k;
+        dp.assign(n,vector<vector<int>>(m,vector<int>(k,-1)));
 
-        dp = vector<vector<vector<int>>>(
-            m, vector<vector<int>>(n, vector<int>(k, -1))
-        );
-
-        return rec(0, 0, g[0][0] % K);
+        return rec(0,0,0,grid);
+        
     }
 
-    int rec(int i, int j, int rem) {
-        if (i >= m || j >= n)
+    int rec(int i,int j,int sum,vector<vector<int>>& grid){
+ if(i>=n || j>=m){
             return 0;
-
-        if (i == m - 1 && j == n - 1)
-            return (rem == 0);
-
-        if (dp[i][j][rem] != -1)
-            return dp[i][j][rem];
-
-        long long ways = 0;
-
-        // move down
-        if (i + 1 < m) {
-            ways += rec(i + 1, j, (rem + g[i + 1][j]) % K);
+        }
+        sum=(sum+grid[i][j])%K;
+        if(i==n-1 && j==m-1){
+            if(sum%K==0){
+                return 1;
+            }
+            return 0;
         }
 
-        // move right
-        if (j + 1 < n) {
-            ways += rec(i, j + 1, (rem + g[i][j + 1]) % K);
+       
+        if(dp[i][j][sum]!=-1){
+            return dp[i][j][sum];
         }
 
-        return dp[i][j][rem] = ways % MOD;
+        
+          int ans=0;
+     ans+=(rec(i+1,j,sum,grid)+rec(i,j+1,sum,grid)) %MOD;
+
+         return dp[i][j][sum]=ans%MOD;
+
     }
 };
-
-
