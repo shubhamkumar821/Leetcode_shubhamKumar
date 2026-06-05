@@ -1,36 +1,35 @@
 class Solution {
 public:
-    vector<vector<int>> st;
-    vector<int> ans;
-
-    void rec(int num, int k, int sum) {
-
-        // found valid combination
-        if(ans.size() == k) {
-            if(sum == 0) {
-                st.push_back(ans);
-            }
-            return;
-        }
-
-        // stop if sum becomes negative
-        if(sum < 0 || num > 9) return;
-
-        // take current number
-        ans.push_back(num);
-        rec(num + 1, k, sum - num);
-
-        // backtrack
-        ans.pop_back();
-
-        // skip current number
-        rec(num + 1, k, sum);
-    }
-
+int N,K;
+vector<vector<int>>ans;
     vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int>arr(9);
+        N=n;
+        K=k;
+        for(int i=0;i<9;i++){
+            arr[i]=i+1;
 
-        rec(1, k, n);
+        }
+        vector<int>st;
+        rec(st,0,0,arr);
+        return ans;
+        
+    }
+    void rec(vector<int>&st,int lev,int sum,vector<int>&arr){
+        if(lev==9){
+            if(st.size()==K  && sum==N){
+                ans.push_back(st);
+                return;
+            }
+            else{
+                return;
+            }
+        }
+        if(sum>N)return ;
+        rec(st,lev+1,sum,arr);
+        st.push_back(arr[lev]);
+        rec(st,lev+1,sum+arr[lev],arr);
+        st.pop_back();
 
-        return st;
     }
 };
