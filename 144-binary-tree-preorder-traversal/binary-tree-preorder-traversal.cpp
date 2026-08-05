@@ -11,27 +11,17 @@
  */
 class Solution {
 public:
-void traverse(vector<int>& ans,TreeNode*root){
-    if(root==nullptr){
-        return ;
-    }
-    ans.push_back(root->val);
-     traverse(ans,root->left);
-      traverse(ans,root->right);
-      
-
-
-
-}
+vector<int>ans;
     vector<int> preorderTraversal(TreeNode* root) {
-        
-            
-        
-       vector<int> ans;
-        traverse(ans,root);
+        func(root);
         return ans;
         
-    
-        
+    }
+    void func(TreeNode*root){
+        if(root==nullptr)return;
+        ans.push_back(root->val);
+        func(root->left);
+        func(root->right);
+
     }
 };
