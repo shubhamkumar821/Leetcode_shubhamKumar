@@ -1,31 +1,19 @@
 class Solution {
 public:
-     int solve(vector<int>& nums) {
+    int solve(vector<int>& nums) {
         stack<int> st;
         int ans = 0;
-        int n = nums.size();
-        
-        for (int i = 0; i <= n; i++) {
-            // Correct logic: Use 0 at the end to force pop everything
-            int curr = (i == n) ? 0 : nums[i];
-            
-            // Fix 1: Change to '<' to maintain an increasing stack
+        for (int i = 0; i <= nums.size(); i++) {
+            int curr = (i == nums.size()) ? 0 : nums[i];
             while (!st.empty() && curr < nums[st.top()]) {
-                int top = st.top(); // This is the bar we are processing
+                int top = st.top();
                 st.pop();
-                
-                // Fix 2: Calculate the correct width for the popped bar
-                int width = st.empty() ? i : (i - st.top() - 1);
-                
-                // Fix 3: Multiply by the correct height (nums[top])
-                int total = width * nums[top]; 
+                int prev = st.empty() ? i : (i - st.top() - 1);
+                int total = prev * nums[top];
                 ans = max(ans, total);
             }
-            
-            // Fix 4: Only push valid indices; do not push the boundary index 'n'
-            if (i < n) {
-                st.push(i);
-            }
+            ans = max(ans, curr);
+            st.push(i);
         }
         return ans;
     }
@@ -55,16 +43,15 @@ public:
 
             return ans;
             */
-        vector<int> nums(m,0);
-        int ans=0;
+        vector<int> nums(m, 0);
+        int ans = 0;
         for (int i = 0; i < n; i++) {
-            
+
             for (int j = 0; j < m; j++) {
-                if(matrix[i][j]=='1'){
-                    nums[j]+=1;
-                }
-                else if(matrix[i][j]=='0'){
-                    nums[j]=0;
+                if (matrix[i][j] == '1') {
+                    nums[j] += 1;
+                } else if (matrix[i][j] == '0') {
+                    nums[j] = 0;
                 }
             }
             // for(int i=0;i<nums.size();i++){
@@ -72,7 +59,7 @@ public:
             // }
             // cout<<endl;
             // cout<<"ans="<<solve(nums)<<endl;
-            ans=max(ans,solve(nums));
+            ans = max(ans, solve(nums));
         }
         return ans;
     }
