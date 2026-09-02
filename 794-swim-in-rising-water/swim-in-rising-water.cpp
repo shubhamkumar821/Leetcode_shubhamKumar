@@ -18,7 +18,7 @@ public:
 
         vector<vector<int>> dis(n, vector<int>(m, 1e9));
 
-        // {maximum water level, {row, column}}
+       
         pq.push({grid[0][0], {0, 0}});
         dis[0][0] = grid[0][0];
 
@@ -31,12 +31,12 @@ public:
             int r = x.second.first;
             int c = x.second.second;
 
-            // Destination reached
+      
             if (r == n - 1 && c == m - 1) {
-                return cost;
+                return dis[r][c];
             }
 
-            // Explore 4 directions
+            
             for (int i = 0; i < 4; i++) {
 
                 int a = r + dx[i];
@@ -45,10 +45,10 @@ public:
                 if (a < 0 || b < 0 || a >= n || b >= m)
                     continue;
 
-                // Water level needed to reach this cell
+             
                 int newCost = max(cost, grid[a][b]);
 
-                // Found a better path
+              
                 if (newCost < dis[a][b]) {
 
                     dis[a][b] = newCost;
