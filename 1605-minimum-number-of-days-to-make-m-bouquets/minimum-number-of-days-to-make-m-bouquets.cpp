@@ -1,66 +1,49 @@
 class Solution {
 public:
-int K,M,n;
     int minDays(vector<int>& bloomDay, int m, int k) {
-        int l=1;
-        int h=-1e9;
-        K=k;
-        M=m;
-        for(int i:bloomDay){
-            h=max(h,i);
-        }
+        int l = INT_MAX;
+        int h = INT_MIN;
 
-         n=bloomDay.size();
-        long long total=1LL*m*k;
-        if(n<total)
-        {
+        for (auto i : bloomDay) {
+            l = min(i, l);
+            h = max(h, i);
+        }
+        // cout<<h<<l<<endl;
+
+        if (1LL *m*1LL* k > bloomDay.size())
             return -1;
+        int ans = -1;
+
+        while (l <= h) {
+            int mid = (h + l) / 2;
+            if (check(mid, bloomDay, m, k)) {
+                h = mid - 1;
+                ans = mid;
+            } else {
+                l = mid + 1;
+            }
         }
-        int ans=h;
 
-        while(l<=h){
-            long long mid=(l+h)/2;
+        return ans;
+    }
 
-            if(check(mid,bloomDay)){
-                ans=mid;
-                h=mid-1;
+    bool check(int x, vector<int>& arr, int m, int k) {
+        int cnt_adj = 0;
+        int len = 0;
+        for (int i = 0; i < arr.size(); i++) {
+
+            if (x >= arr[i]) {
+                len++;
             }
             else{
-                l=mid+1;
+                len=0;
             }
-
-
+            if (len == k) {
+                cnt_adj++;
+                len = 0;
+            }
         }
-        return ans;
-        
+
+        return cnt_adj >= m;
     }
-
-    bool check(int x,vector<int>&arr){
-       int flower=0;
-       int  bq=0;
-
-
-        for(int i=0;i<n;i++){
-            if(arr[i]<=x){
-                flower++;
-                 if(flower==K){
-                bq++;
-                flower=0;
-            }
-            }
-           
-            
-        else{
-            flower=0;
-        }
-
-
-        }
-
-        return bq>=M;
-
-
-    }
-
-
 };
