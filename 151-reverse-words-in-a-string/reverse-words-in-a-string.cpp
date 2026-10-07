@@ -1,50 +1,60 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        int i=0;
-        int j=s.size()-1;
-        while(s[i]==' '){
-            i++;
+
+          string t="";
+        int n=s.size();
+        int st=0;;
+        int end=n-1;
+        for(int i=0;i<n;i++){
+            if(s[i]==' ')continue;
+            else{
+                st=i;
+                break;
+                
+            }
         }
         
-         while(s[j]==' '){
-            j--;
+        for(int i=n-1;i>=0;i--){
+            if(s[i]==' ')continue;
+            else {
+                end=i;
+                break;
+                
+                
+            }
         }
-        string t=" ";
-        bool space=true;
-        for(int k=i;k<=j;k++)
-        {
-            if(s[k]==' ' ){
-           if(space){
-            t+=' ';
-            space=false;
-
-           }
-           else {
-            continue;
-           }
+        
+        for(int i=st;i<=end;i++){
+            if(s[i]==' ' && s[i+1]==' '){
+                continue;
             }
             else{
-                t+=s[k];
-                space=true;
+                t+=s[i];
             }
+            
         }
-          int interval=0;
-        for(int a=0;a<t.size();a++){
-            if(t[a]==' '){
-                reverse(t.begin()+interval,t.begin()+a);
-                interval=a+1;
+        int prev=0;
+               
+           
+        
+        for(int i=0;i<t.size();i++){
+            if(t[i]==' ' ){
+                reverse(t.begin()+prev,t.begin()+i);
+                prev=i+1;
             }
+            else if(i==t.size()-1){
+                   reverse(t.begin()+prev,t.end());
+                
+                
+            }
+          
+            
         }
-        reverse(t.begin()+interval,t.end());
+       
+          
         reverse(t.begin(),t.end());
-        t.pop_back();
-        
-        return t;
-        
-
-        
-
+         return t;
         
     }
 };
