@@ -1,70 +1,78 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
+    map<TreeNode*, vector<TreeNode*>> mp;
+    map<TreeNode*, int> vis;
+    vector<int> ans;
+    int K;
+
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        queue<TreeNode*>q;
+
+        // Important: clear previous data
+        mp.clear();
+        vis.clear();
+        ans.clear();
+
+        K = k;
+
+        queue<TreeNode*> q;
+        TreeNode* temp = nullptr;
+
         q.push(root);
-        map<TreeNode*,TreeNode*>Par;
 
-        while(!q.empty()){
-            auto x=q.front();
+        // Build an undirected graph
+        while (!q.empty()) {
+
+            TreeNode* n = q.front();
             q.pop();
-            if(x->left!=nullptr){
-                Par[x->left]=x;
-                q.push(x->left);
+
+            // Target is already given as a pointer
+            if (n == target) {
+                temp = n;
             }
 
-            if(x->right!=nullptr){
-                Par[x->right]=x;
-                q.push(x->right);
+            // Left child
+            if (n->left != nullptr) {
+                mp[n].push_back(n->left);
+                mp[n->left].push_back(n);
+
+                q.push(n->left);
             }
 
-        }
+            // Right child
+            if (n->right != nullptr) {
+                mp[n].push_back(n->right);
+                mp[n->right].push_back(n);
 
-        queue<TreeNode*>Q;
-        map<TreeNode*,bool>vis;
-        vis[target]=true;
-        int lev=0;
-        Q.push(target);
-        while(!Q.empty()){
-            
-            int sz=Q.size();
-       
-            if(lev++==k)break;
-            for(int i=0;i<sz;i++){
-                auto node=Q.front();
-                     Q.pop();
-                if(node->left && !vis[node->left]){
-                    vis[node->left]=true;
-                    Q.push(node->left);
-                }
-                if(node->right && !vis[node->right] ){
-                    vis[node->right]=true;
-                    Q.push(node->right);
-                }
-
-                if(Par[node] && !vis[Par[node]]){
-                    vis[Par[node]]=true;
-                    Q.push(Par[node]);
-                }
+                q.push(n->right);
             }
         }
-        vector<int>ans;
-        while(!Q.empty()){
-            ans.push_back(Q.front()->val);
-            Q.pop();
-        }
+
+        // Start DFS from target
+        dfs(temp, 0);
+
+        sort(ans.begin(), ans.end());
+
         return ans;
+    }
 
-    
-        
+    void dfs(TreeNode* root, int cnt) {
+
+        if (root == nullptr)
+            return;
+
+        // We reached exactly distance K
+        if (cnt == K) {
+            ans.push_back(root->val);
+            return;
+        }
+
+        vis[root] = 1;
+
+        for (TreeNode* i : mp[root]) {
+
+            if (vis[i] != 1) {
+                dfs(i, cnt + 1);
+            }
+        }
     }
 };
