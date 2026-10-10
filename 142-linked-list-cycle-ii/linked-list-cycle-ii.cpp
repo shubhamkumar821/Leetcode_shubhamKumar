@@ -9,16 +9,17 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        if(head==nullptr || head->next==nullptr){
-            return nullptr;
-        }
-         map<ListNode*,int>mp;
-        while(head){
-            mp[head]++;
-            head=head->next;
-            if(mp[head]>0){
+
+        map<ListNode*,int>mp;
+        int cnt=0;
+
+        while(head ){
+            if(mp[head]==1){
                 return head;
             }
+            mp[head]++;
+            head=head->next;
+        
         }
         return head;
         
